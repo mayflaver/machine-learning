@@ -3,8 +3,6 @@ import operator
 import functools
 import random
 
-def matrix_multi(vector, data):
-    return reduce(operator.__add__, itertools.imap(operator.__mul__, data, vector))
 
 def linear_expression_fun(datas):
     def matrix_multi(data, vector):
