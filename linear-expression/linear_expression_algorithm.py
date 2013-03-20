@@ -25,7 +25,7 @@ def linear_expression_fun(datas):
         vector.append(random.randint(0, 100))
     mins = J(vector)
     while 1:
-        vector = closers(vector, 0.1)
+        vector = closers(vector, 0.0001)
         value = J(vector)
         if mins > value:
             mins = value
@@ -35,6 +35,9 @@ def linear_expression_fun(datas):
     return functools.partial(matrix_multi, vector)
 
 if __name__ == '__main__':
-    datas = [[3,6], [1,2], [4,8], [0,0],[5,10],[6,12],[2,4],[8,16]]
+    datas = [[1,2],[3,6], [7,13],[8,17],[6,11],[9,25],[10,15]]
     fun = linear_expression_fun(datas)
-    print fun([3])
+    print fun([20])
+
+
+
