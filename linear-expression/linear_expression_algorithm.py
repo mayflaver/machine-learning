@@ -5,34 +5,36 @@ import random
 
 
 def linear_expression_fun(datas):
-    def matrix_multi(data, vector):
+    def matrix_multi(vector, data):
         return reduce(operator.__add__, itertools.imap(operator.__mul__, data, vector))
 
-    def help_fun(pos, datas, vector, step):
-        return vector[pos]- step*reduce(operator.__add__, map(lambda data: (matrix_multi(data[:-1], vector)-data[-1])*data[pos]))/len(datas)
+    def distance(data, vector):
+        return matrix_multi(vector, data[:-1]) - data[-1]
 
-    def iterator(pos, vector):
-        return map(lambda pos, vector: help_fun(pos, datas, vector, step), vector)
+    def J(vector):
+        return reduce(operator.__add__, map(lambda data: distance(data, vector) ** 2, datas)) / (2 * len(datas))
 
-    def vector_again(vector):
-        return map(lambda pos: iterator(pos, vector), xrange(len(vector)))
+    def closer(pos, vector, step):
+        return vector[pos] - step / len(datas) * reduce(operator.__add__, map(lambda data: distance(data, vector) * data[pos], datas))
 
-    def J(vector, datas):
-        reduce(operator.__add__, map(lambda data: matrix_multi(init, data[:-1])-data[-1], datas))
-    init = []
-    for i, _ in enumerate(datas[0][:-1]):
-        init.append(random.randint(0, 100))
-        
-        
-    J_value = J(init)
-    while True:
-        init = vector_again(init)
-        if J_value - J(init) > 0.001:
-            J_value = J(init)
-            
+    def closers(vector, step):
+        return map(lambda pos: closer(pos, vector, step), xrange(len(vector)))
+
+    vector = []
+    for i in xrange(len(datas[0])-1):
+        vector.append(random.randint(0, 100))
+    mins = J(vector)
+    while 1:
+        vector = closers(vector, 0.1)
+        value = J(vector)
+        if mins > value:
+            mins = value
         else:
             break
-    return functools.partial(matrix_multi, init)
-    
 
-    
+    return functools.partial(matrix_multi, vector)
+
+if __name__ == '__main__':
+    datas = [[3,6], [1,2], [4,8], [0,0],[5,10],[6,12],[2,4],[8,16]]
+    fun = linear_expression_fun(datas)
+    print fun([3])
