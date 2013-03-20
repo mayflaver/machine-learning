@@ -3,7 +3,6 @@ import operator
 import functools
 import random
 
-
 def linear_expression_fun(datas):
     def matrix_multi(vector, data):
         return reduce(operator.__add__, itertools.imap(operator.__mul__, data, vector))
@@ -11,6 +10,7 @@ def linear_expression_fun(datas):
     def distance(data, vector):
         return matrix_multi(vector, data[:-1]) - data[-1]
 
+    # J function is the error function, find the minest value of J, and obtain the vector
     def J(vector):
         return reduce(operator.__add__, map(lambda data: distance(data, vector) ** 2, datas)) / (2 * len(datas))
 
@@ -37,7 +37,7 @@ def linear_expression_fun(datas):
 if __name__ == '__main__':
     datas = [[1,2],[3,6], [7,13],[8,17],[6,11],[9,25],[10,15]]
     fun = linear_expression_fun(datas)
-    print fun([20])
+    print fun([50])
 
 
 
